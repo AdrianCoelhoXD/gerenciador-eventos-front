@@ -14,26 +14,30 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Parte azul (esquerda) - apenas em desktop */}
-      <div className="hidden md:block md:w-1/2 bg-blue-600"></div>
+    <div className="min-h-screen flex flex-col sm:flex-row">
+      {/* MODIFICAÇÃO: Alterado md: para sm: - parte azul agora aparece a partir de 640px */}
+      <div className="hidden sm:block sm:w-1/2 bg-blue-600"></div>
 
-      {/* Parte do formulário (direita) */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">
-        <div className="w-full max-w-md space-y-6">
-          <div className="text-center md:text-left">
-            <h2 className="text-2xl font-bold text-gray-800">Crie sua conta</h2>
-            <p className="mt-2 text-sm text-gray-600">
+      {/* MODIFICAÇÃO: Ajustado padding e margens para mobile */}
+      <div className="w-full sm:w-1/2 flex items-center justify-center p-3 sm:p-6 md:p-8">
+        {/* MODIFICAÇÃO: Reduzido max-width em mobile e ajustado espaçamento */}
+        <div className="w-full max-w-xs sm:max-w-md space-y-4 sm:space-y-6">
+          <div className="text-center sm:text-left">
+            {/* MODIFICAÇÃO: Título responsivo */}
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Crie sua conta</h2>
+            {/* MODIFICAÇÃO: Texto responsivo */}
+            <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600">
               Já tem uma conta?{' '}
               <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
-                 Clique aqui para fazer login
+                Clique aqui para fazer login
               </Link>
             </p>
           </div>
 
-          <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+          {/* MODIFICAÇÃO: Formulário com espaçamento responsivo */}
+          <form className="mt-3 sm:mt-6 space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="fullName" className="block text-xs sm:text-sm font-medium text-gray-700">
                 Nome completo
               </label>
               <input
@@ -41,14 +45,14 @@ const Register = () => {
                 id="fullName"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                className="mt-1 block w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Digite seu nome completo"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-gray-700">
                 E-mail
               </label>
               <input
@@ -56,14 +60,14 @@ const Register = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                className="mt-1 block w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Digite seu e-mail"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-xs sm:text-sm font-medium text-gray-700">
                 Senha
               </label>
               <input
@@ -71,19 +75,21 @@ const Register = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                className="mt-1 block w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Digite sua senha"
                 required
               />
-              <p className="mt-1 text-xs text-gray-500">
+              {/* MODIFICAÇÃO: Texto de ajuda responsivo */}
+              <p className="mt-1 text-2xs sm:text-xs text-gray-500">
                 Crie uma senha com no mínimo 7 caracteres com ao menos uma letra e um número
               </p>
             </div>
 
             <div>
+              {/* MODIFICAÇÃO: Botão com texto responsivo */}
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                className="w-full flex justify-center py-2 px-4 text-xs sm:text-sm border border-transparent rounded-md shadow-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Criar conta
               </button>
