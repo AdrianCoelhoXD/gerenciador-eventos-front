@@ -4,3 +4,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Transições suaves para todos os elemento */ 
+* {
+    transition: all 0.2s ease;
+  }
+  
+  /* Efeito de escala nos cards ao passar o mouse */
+  .hover-scale:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+
+  }  
