@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
+import { user, events } from '../data/mockData.js';
+import { useCarousel } from '../hooks/eventCarousel.js';
+import EventCarousel from '../components/EventCarousel.jsx';
+import Footer from '../components/Footer';
 
 export default function Home() {
-  // Dados do usuário logado
-  const user = {
-    name: "Adrian Coelho",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg"
-  };
+  const { visibleItems: visibleEvents, next: nextEvents, prev: prevEvents } = useCarousel(events);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -111,23 +111,7 @@ export default function Home() {
                 </svg>
               </button>
             </div>
-            
-            {/* Dropdown Formato */}
-            <div className="relative">
-              <button className="flex items-center px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-700 hover:border-purple-400 hover:bg-purple-50">
-                Formato
-                <svg className="w-4 h-4 ml-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
-            
-            {/* Checkbox Com submissão */}
-            <label className="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-white rounded-lg border border-gray-300 hover:border-purple-400 hover:bg-purple-50">
-              <input type="checkbox" className="rounded text-purple-600 focus:ring-purple-500" />
-              <span className="text-gray-700">Com submissão</span>
-            </label>
-            
+       
             {/* Botão Filtros */}
             <button className="flex items-center px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-700 hover:border-purple-400 hover:bg-purple-50">
               <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,7 +121,7 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Botão Encontrar - Destaque */}
+          {/* Botão roxo Encontrar - Destaque */}
           <div className="mt-6 flex justify-end">
             <button className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium flex items-center shadow-md hover:shadow-lg">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,101 +132,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Seção de Eventos em Destaque */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Eventos em destaque</h2>
-          
-          {/* Evento 1 */}
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-200 hover:border-purple-300 transition-colors">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-md font-medium mb-2">
-                  SUBMISSÕES ABERTAS
-                </span>
-                <h3 className="text-xl font-bold text-gray-900">EXERCISION</h3>
-                <p className="text-gray-500">2025 | 28-30 MAI</p>
-              </div>
-              <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md font-medium">
-                Evento online
-              </span>
-            </div>
-            <h4 className="text-lg font-semibold text-gray-800 mb-2">
-              CAED-Jus 2025 - Congresso Internacional de Altos Estudos em Direito
-            </h4>
-            <div className="flex items-center text-gray-600">
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>quarta-feira, 28 maio</span>
-            </div>
-          </div>
+        {/* Seção de Eventos com o Componente Carrossel */}
+        <EventCarousel 
+          events={visibleEvents} 
+          onNext={nextEvents} 
+          onPrev={prevEvents} 
+        />
 
-          {/* Evento 2 */}
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-200 hover:border-purple-300 transition-colors">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              XV Encontro Nacional de Educação Matemática
-            </h3>
-            <div className="flex items-center text-gray-600 mb-2">
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>segunda-feira, 28 julho</span>
-            </div>
-            <div className="flex items-center text-gray-600">
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Manaus, AM</span>
-            </div>
-          </div>
-
-          {/* Evento 3 */}
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-200 hover:border-purple-300 transition-colors">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="text-xl font-bold text-gray-900">II Congresso Brasileiro de Empreendedorismo</h3>
-              </div>
-              <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md font-medium">
-                Evento online
-              </span>
-            </div>
-            <div className="flex items-center text-gray-600">
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>domingo, 25 maio</span>
-            </div>
-          </div>
-
-          {/* Evento 4 */}
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 hover:border-purple-300 transition-colors">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Congresso Nacional de Saúde e Transformação Digital
-            </h3>
-            <div className="flex items-center text-gray-600 mb-2">
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>sexta-feira, 11 abril</span>
-            </div>
-            <div className="flex items-center text-gray-600">
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Evento online</span>
-            </div>
-          </div>
-
-          {/* Botão Ver Mais */}
-          <div className="mt-8 text-center">
-            <button className="px-6 py-3 bg-white border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium shadow-sm hover:shadow-md">
-              Ver mais eventos
-            </button>
-          </div>
-        </section>
+        {/* Botão Ver Mais */}
+        <div className="mt-8 text-center">
+          <button className="px-6 py-3 bg-white border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium shadow-sm hover:shadow-md">
+            Ver mais eventos
+          </button>
+        </div>
       </main>
+      <Footer />
     </div>
   );
 }
