@@ -34,7 +34,7 @@ export default function Welcome() {
         
         {/* Card para Encontrar Evento */}
         <Link 
-          to="/find-events" 
+          to="/" 
           className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-300"
         >
           <div className="p-8 flex flex-col items-center">
