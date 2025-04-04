@@ -1,14 +1,34 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(''); 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/welcome");
+    setError('');
+    
+    try {
+      const response = await axios.post('http://localhost:3000/api/login', { 
+        email, 
+        password 
+      });
+
+      if (response.data.success) {
+        // Salva o token no localStorage
+        localStorage.setItem('token', response.data.token);
+        
+        // Redireciona para a página de boas-vindas
+        navigate("/welcome");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Erro ao fazer login');
+      console.error('Erro no login:', err);
+    }
   };
 
   return (
@@ -22,6 +42,13 @@ const Login = () => {
           <div className="text-center sm:text-left">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Faça login na sua conta</h2>
           </div>
+
+          {/* Seção para mostrar erros */}
+          {error && (
+            <div className="text-red-500 text-sm text-center">
+              {error}
+            </div>
+          )}
 
           <form className="mt-4 sm:mt-6 space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
             <div>
