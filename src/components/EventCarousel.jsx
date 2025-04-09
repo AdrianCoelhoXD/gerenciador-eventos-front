@@ -1,9 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import telaEvento from '../assets/image/tela-evento.png'; // Ajuste o caminho conforme necessário
 
 const EventCarousel = ({ events, onNext, onPrev, showDescription = false }) => {
+  const [showImageModal, setShowImageModal] = useState(false);
+
+  const handleEventClick = () => {
+    setShowImageModal(true);
+  };
+
+  const closeModal = () => {
+    setShowImageModal(false);
+  };
+
   return (
     <div className="mb-10">
+      {/* Modal para exibir a imagem */}
+      {showImageModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={closeModal}>
+          <div className="bg-white rounded-lg max-w-4xl max-h-screen overflow-auto" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-center p-4 border-b">
+              <h3 className="text-lg font-semibold">Detalhes do Evento</h3>
+              <button 
+                onClick={closeModal}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-4">
+              <img 
+                src={telaEvento} 
+                alt="Detalhes do evento" 
+                className="w-full h-auto rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold text-gray-800">Eventos em destaque</h2>
         <div className="flex space-x-2">
@@ -30,7 +67,11 @@ const EventCarousel = ({ events, onNext, onPrev, showDescription = false }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {events.map((event) => (
-          <div key={event.id} className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 hover:border-purple-300 transition-colors h-full flex flex-col">
+          <div 
+            key={event.id} 
+            className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 hover:border-purple-300 transition-colors h-full flex flex-col cursor-pointer"
+            onClick={handleEventClick}
+          >
             <div className="flex justify-between items-start mb-3">
               <div>
                 <h3 className="text-lg font-bold text-gray-900">{event.title || event.name}</h3>
@@ -44,7 +85,6 @@ const EventCarousel = ({ events, onNext, onPrev, showDescription = false }) => {
               )}
             </div>
             
-            {/* Adicionando a descrição do evento */}
             {showDescription && event.description && (
               <div className="mb-4 flex-grow">
                 <p className="text-gray-600 text-sm line-clamp-3">{event.description}</p>
