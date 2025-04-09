@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { user, events } from '../data/mockData.js';
 import { useCarousel } from '../hooks/eventCarousel.js';
 import EventCarousel from '../components/EventCarousel.jsx';

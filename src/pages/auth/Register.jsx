@@ -16,18 +16,24 @@ const Register = () => {
     setError("");
 
     try {
-      // Envia os dados para o endpoint de registro
-      await axios.post(
-        "http://localhost:3000/api/register", // Ajuste a URL conforme seu backend
+      const response = await axios.post(
+        "http://localhost:3000/api/register",
         { name, email, password }
       );
 
-      // Redireciona para a página de login após registro bem-sucedido
-      navigate("/login");
+      if (response.data.success) {
+        // Salva o token no localStorage
+        localStorage.setItem('token', response.data.token);
+        console.log("Token salvo no localStorage:", response.data.token);
+
+        // Redireciona para a página inicial
+        navigate("/welcome");
+      }
     } catch (err) {
       setError(
         err.response?.data?.message || "Erro ao registrar. Tente novamente."
       );
+      console.error('Erro no registro:', err);
     } finally {
       setIsLoading(false);
     }
@@ -35,10 +41,8 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex flex-col sm:flex-row">
-      {/* Parte azul - visível a partir de sm (640px) */}
       <div className="hidden sm:block sm:w-1/2 bg-blue-600"></div>
 
-      {/* Parte do formulário */}
       <div className="w-full sm:w-1/2 flex items-center justify-center p-3 sm:p-6 md:p-8">
         <div className="w-full max-w-xs sm:max-w-md space-y-4 sm:space-y-6">
           <div className="text-center sm:text-left">
@@ -56,7 +60,6 @@ const Register = () => {
             </p>
           </div>
 
-          {/* Exibe mensagens de erro */}
           {error && (
             <div className="p-3 bg-red-100 text-red-700 text-sm rounded-md">
               {error}
@@ -121,8 +124,7 @@ const Register = () => {
                 minLength={7}
               />
               <p className="mt-1 text-xs sm:text-sm text-gray-500">
-                Crie uma senha com no mínimo 7 caracteres com ao menos uma letra e
-                um número
+                Crie uma senha com no mínimo 7 caracteres com ao menos uma letra e um número
               </p>
             </div>
 

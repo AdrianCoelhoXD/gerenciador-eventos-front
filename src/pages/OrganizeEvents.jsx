@@ -3,43 +3,86 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const OrganizeEvent = () => {
-  const [eventName, setEventName] = useState("");
-  const [participants, setParticipants] = useState("");
-  const [organizerName, setOrganizerName] = useState("");
-  const [organizerEmail, setOrganizerEmail] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    date: "",
+    location: "",
+    isOnline: false,
+    maxParticipants: "",
+    categories: "",
+    imageUrl: ""
+  });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
 
-    // Validação simples
-    if (!eventName || !participants || !organizerName || !organizerEmail) {
-      setError("Preencha todos os campos!");
+    const token = localStorage.getItem("token");
+    console.log("Token enviado:", token);
+    if (!token) {
+      setError("Você precisa estar logado para criar um evento");
+      setIsLoading(false);
+      return;
+    }
+
+    const requiredFields = ['name', 'description', 'date', 'location', 'maxParticipants'];
+    const missingFields = requiredFields.filter(field => !formData[field]);
+    
+    if (missingFields.length > 0) {
+      setError(`Preencha todos os campos obrigatórios: ${missingFields.join(', ')}`);
       setIsLoading(false);
       return;
     }
 
     try {
-      await axios.post(
+      const eventData = {
+        ...formData,
+        maxParticipants: parseInt(formData.maxParticipants),
+        date: new Date(formData.date).toISOString(),
+        categories: formData.categories ? 
+          formData.categories.split(',').map(cat => cat.trim()) : []
+      };
+
+      console.log("Dados enviados para o backend:", eventData);
+
+      const response = await axios.post(
         "http://localhost:3000/api/events",
-        {
-          name: eventName,
-          participants: parseInt(participants),
-          organizerName,
-          organizerEmail,
-        },
+        eventData,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
         }
       );
-      navigate("/organizer");
+      
+      if (response.status === 201) {
+        navigate("/organizer");
+      } else {
+        throw new Error(response.data.message || "Erro ao criar evento");
+      }
     } catch (err) {
-      setError(err.response?.data?.message || "Erro ao criar evento.");
+      if (err.response?.status === 401) {
+        setError("Sessão expirada. Faça login novamente.");
+      } else {
+        setError(err.response?.data?.message || 
+          "Erro ao criar evento. Verifique os dados e tente novamente.");
+      }
+      console.error("Erro detalhado:", err);
     } finally {
       setIsLoading(false);
     }
@@ -47,10 +90,8 @@ const OrganizeEvent = () => {
 
   return (
     <div className="min-h-screen flex flex-col sm:flex-row">
-      {/* Parte azul - visível apenas em telas médias/grandes (sm:block) */}
       <div className="hidden sm:block sm:w-1/2 bg-blue-600"></div>
 
-      {/* Parte do formulário */}
       <div className="w-full sm:w-1/2 flex items-center justify-center p-4 sm:p-8">
         <div className="w-full max-w-md space-y-4">
           <h1 className="text-2xl font-bold text-center text-gray-800">Criar Evento</h1>
@@ -68,8 +109,9 @@ const OrganizeEvent = () => {
               </label>
               <input
                 type="text"
-                value={eventName}
-                onChange={(e) => setEventName(e.target.value)}
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 required
               />
@@ -77,13 +119,27 @@ const OrganizeEvent = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Número de Participantes *
+                Descrição *
+              </label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows={3}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Data e Hora do Evento *
               </label>
               <input
-                type="number"
-                min="1"
-                value={participants}
-                onChange={(e) => setParticipants(e.target.value)}
+                type="datetime-local"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 required
               />
@@ -91,12 +147,41 @@ const OrganizeEvent = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Nome do Organizador *
+                Localização *
               </label>
               <input
                 type="text"
-                value={organizerName}
-                onChange={(e) => setOrganizerName(e.target.value)}
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                name="isOnline"
+                checked={formData.isOnline}
+                onChange={handleChange}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label className="ml-2 block text-sm text-gray-700">
+                Evento Online
+              </label>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Número Máximo de Participantes *
+              </label>
+              <input
+                type="number"
+                name="maxParticipants"
+                min="1"
+                value={formData.maxParticipants}
+                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 required
               />
@@ -104,14 +189,29 @@ const OrganizeEvent = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                E-mail do Organizador *
+                Categorias (separadas por vírgula)
               </label>
               <input
-                type="email"
-                value={organizerEmail}
-                onChange={(e) => setOrganizerEmail(e.target.value)}
+                type="text"
+                name="categories"
+                value={formData.categories}
+                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                required
+                placeholder="Ex: Música, Tecnologia, Educação"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                URL da Imagem do Evento
+              </label>
+              <input
+                type="url"
+                name="imageUrl"
+                value={formData.imageUrl}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="https://exemplo.com/imagem.jpg"
               />
             </div>
 

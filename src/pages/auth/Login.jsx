@@ -5,13 +5,13 @@ import axios from "axios";
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); 
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
+
     try {
       const response = await axios.post('http://localhost:3000/api/login', { 
         email, 
@@ -21,29 +21,27 @@ const Login = () => {
       if (response.data.success) {
         // Salva o token no localStorage
         localStorage.setItem('token', response.data.token);
-        
-        // Redireciona para a página de boas-vindas
+        console.log("Token salvo no localStorage:", response.data.token);
+
+        // Redireciona para a página inicial
         navigate("/welcome");
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Erro ao fazer login');
+      setError(err.response?.data?.message || 'Erro ao fazer login. Tente novamente.');
       console.error('Erro no login:', err);
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col sm:flex-row">
-      {/* Parte azul - visível a partir de sm (640px) */}
       <div className="hidden sm:block sm:w-1/2 bg-blue-600"></div>
 
-      {/* Parte do formulário */}
       <div className="w-full sm:w-1/2 flex items-center justify-center p-3 sm:p-6 md:p-8">
         <div className="w-full max-w-xs sm:max-w-md space-y-4 sm:space-y-6">
           <div className="text-center sm:text-left">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Faça login na sua conta</h2>
           </div>
 
-          {/* Seção para mostrar erros */}
           {error && (
             <div className="text-red-500 text-sm text-center">
               {error}
