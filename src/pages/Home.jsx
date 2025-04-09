@@ -35,7 +35,7 @@ export default function Home() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await axios.get('http://localhost:3000/api/events'); // Ajuste a URL conforme sua API
+        const response = await axios.get('http://localhost:3000/api/events'); 
         // Validar os dados recebidos
         const events = response.data;
         const validEvents = events.filter(
