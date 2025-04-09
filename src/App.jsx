@@ -8,6 +8,7 @@ import OrganizerPage from './pages/OrganizerPage';
 
 import { AuthProvider } from './utils/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
+import AboutUs from './About';
 
 function App() {
 
@@ -20,7 +21,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/organize-event" element={<OrganizeEvent />} />
-        <Route path="/organizer" element={<PrivateRoute element={<OrganizerPage />} />} />      
+        <Route path="/organizer" element={<PrivateRoute element={<OrganizerPage />} />} />     
+        <Route path="/about" element={<AboutUs/>} />
+ 
       </Routes>
     </Router>
     </AuthProvider>
