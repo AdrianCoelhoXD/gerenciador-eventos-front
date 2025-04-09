@@ -9,8 +9,9 @@ const Header = ({ user }) => {
           <Link to="/" className="text-2xl font-bold text-purple-600">Eventopia</Link>
           <nav className="hidden md:flex space-x-6">
             <Link to="/about" className="text-gray-700 hover:text-purple-600">Sobre Nós</Link>
-            <Link to="/find-events" className="text-gray-700 hover:text-purple-600">Encontrar Eventos</Link>
             <Link to="/organize-event" className="text-gray-700 hover:text-purple-600">Organizar Eventos</Link>
+            <Link to="/organizer" className="text-gray-700 hover:text-purple-600">Seus eventos</Link>
+
           </nav>
         </div>
         {user && (

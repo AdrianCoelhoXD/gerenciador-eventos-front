@@ -34,7 +34,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex flex-col sm:flex-row">
-      <div className="hidden sm:block sm:w-1/2 bg-blue-600"></div>
+      <div className="hidden sm:block sm:w-1/2" style={{ backgroundColor: '#8200DB' }}></div>
 
       <div className="w-full sm:w-1/2 flex items-center justify-center p-3 sm:p-6 md:p-8">
         <div className="w-full max-w-xs sm:max-w-md space-y-4 sm:space-y-6">
@@ -58,7 +58,18 @@ const Login = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:outline-none"
+                style={{ 
+                  '--tw-ring-color': '#8200DB',
+                  '--tw-border-opacity': 1,
+                  borderColor: 'rgba(209, 213, 219, var(--tw-border-opacity))',
+                  '&:focus': {
+                    '--tw-ring-offset-shadow': 'var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color)',
+                    '--tw-ring-shadow': 'var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color)',
+                    boxShadow: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)',
+                    borderColor: '#8200DB'
+                  }
+                }}
                 placeholder="Digite seu e-mail"
                 required
               />
@@ -73,7 +84,18 @@ const Login = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md shadow-sm focus:outline-none"
+                style={{ 
+                  '--tw-ring-color': '#8200DB',
+                  '--tw-border-opacity': 1,
+                  borderColor: 'rgba(209, 213, 219, var(--tw-border-opacity))',
+                  '&:focus': {
+                    '--tw-ring-offset-shadow': 'var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color)',
+                    '--tw-ring-shadow': 'var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color)',
+                    boxShadow: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)',
+                    borderColor: '#8200DB'
+                  }
+                }}
                 placeholder="Digite sua senha"
                 required
               />
@@ -82,7 +104,19 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 text-sm sm:text-base border border-transparent rounded-md shadow-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full flex justify-center py-2 px-4 text-sm sm:text-base border border-transparent rounded-md shadow-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                style={{
+                  backgroundColor: '#8200DB',
+                  '--tw-ring-color': '#8200DB',
+                  '&:hover': {
+                    backgroundColor: '#6a00b3'
+                  },
+                  '&:focus': {
+                    '--tw-ring-offset-shadow': 'var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color)',
+                    '--tw-ring-shadow': 'var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color)',
+                    boxShadow: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)'
+                  }
+                }}
               >
                 Entrar
               </button>
@@ -91,7 +125,16 @@ const Login = () => {
 
           <div className="text-center text-xs sm:text-sm text-gray-600">
             Não tem uma conta?{' '}
-            <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link 
+              to="/register" 
+              className="font-medium"
+              style={{
+                color: '#8200DB',
+                '&:hover': {
+                  color: '#6a00b3'
+                }
+              }}
+            >
               Cadastre-se
             </Link>
           </div>
