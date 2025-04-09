@@ -13,7 +13,6 @@ export default function useEventFilters() {
       ...prev,
       [filterType]: selectedOption
     }));
-    // Aqui você pode adicionar lógica adicional como logging ou analytics
     console.log(`${filterType} selected:`, selectedOption);
   };
 
